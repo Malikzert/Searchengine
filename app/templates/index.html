@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Cari Berita{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">Pencarian Berita Indonesia</h2>
+<form method="GET" action="{{ url_for('main.result') }}">
+    <!-- Input query satu baris penuh -->
+    <div class="mb-3">
+        <label for="query" class="form-label">Search, Read, and checked</label>
+        <div class="input-group">
+            <input type="text" name="query" id="query" class="form-control" placeholder="Masukkan kata kunci..." required>
+            <button type="button" id="micBtn" class="btn btn-outline-secondary" title="Gunakan suara">
+                <i id="micIcon" class="bi bi-mic"></i>
+            </button>
+        </div>
+        <small class="text-muted">Klik ikon mikrofon dan ucapkan kata kunci pencarian.</small>
+    </div>
+
+    <!-- Baris kedua: dropdown kiri, tombol submit kanan -->
+    <div class="row mb-3">
+        <!-- Dropdown sumber (kiri) -->
+        <div class="col-md-6">
+            <label for="sumber" class="form-label">Pilih Sumber Berita</label>
+            <select class="form-select" id="sumber" name="sumber">
+                <option value="" {% if not request.args.get('sumber') %}selected{% endif %}> Semua Sumber</option>
+                <option value="kompas" {% if request.args.get('sumber') == 'kompas' %}selected{% endif %}> Kompas</option>
+                <option value="cnn" {% if request.args.get('sumber') == 'cnn' %}selected{% endif %}> CNN Indonesia</option>
+                <option value="detik" {% if request.args.get('sumber') == 'detik' %}selected{% endif %}> Detik</option>
+                <option value="turnbackhoax" {% if request.args.get('sumber') == 'turnbackhoax' %}selected{% endif %}> TurnBackHoax</option>
+            </select>
+        </div>
+
+        <!-- Tombol Cari (kanan) -->
+        <div class="col-md-6 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary ms-auto px-4">
+                <i class="bi bi-search me-2"></i> Cari
+            </button>
+        </div>
+    </div>
+
+    <!-- Dropdown jumlah dokumen -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="limit" class="form-label">Jumlah Dokumen Ditampilkan</label>
+            <select class="form-select" id="limit" name="limit">
+                <option value="5" {% if request.args.get('limit') == '5' %}selected{% endif %}>5</option>
+                <option value="10" {% if request.args.get('limit') == '10' or not request.args.get('limit') %}selected{% endif %}>10</option>
+                <option value="20" {% if request.args.get('limit') == '20' %}selected{% endif %}>20</option>
+                <option value="50" {% if request.args.get('limit') == '50' %}selected{% endif %}>50</option>
+                <option value="semua" {% if request.args.get('limit') == 'semua' %}selected{% endif %}>Semua</option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<div class="mt-5 pt-4 border-top text-muted" style="font-size: 0.9rem;">
+    <strong><p>Sumber Berita:</p></strong>
+    <div class="d-flex flex-wrap align-items-center mt-2">
+        <a href="https://www.cnnindonesia.com/" target="_blank" class="me-3">
+            <img src="{{ url_for('static', filename='img/logo-CNN.png') }}" alt="CNN" height="24">
+        </a>
+        <a href="https://www.kompas.com/" target="_blank" class="me-3">
+            <img src="{{ url_for('static', filename='img/logo-KOMPAS.png') }}" alt="Kompas" height="24">
+        </a>
+        <a href="https://www.detik.com/" target="_blank" class="me-3">
+            <img src="{{ url_for('static', filename='img/logo-DETIK.png') }}" alt="Detik" height="24">
+        </a>
+        <a href="https://turnbackhoax.id/" target="_blank">
+            <img src="{{ url_for('static', filename='img/logo-TBH.png') }}" alt="TurnBackHoax" height="24">
+        </a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const micBtn = document.getElementById('micBtn');
+    const micIcon = document.getElementById('micIcon');
+    const input = document.getElementById('query');
+    const form = document.querySelector('form');
+
+    if (!('webkitSpeechRecognition' in window)) {
+        micBtn.disabled = true;
+        micIcon.className = "bi bi-mic-mute text-danger";
+        micBtn.title = "Browser tidak mendukung speech recognition";
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'id-ID';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    micBtn.addEventListener('click', () => {
+        recognition.start();
+        micIcon.className = "bi bi-record-circle-fill text-danger";
+    });
+
+    recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        micIcon.className = "bi bi-mic";
+        form.submit();
+    };
+
+    recognition.onerror = function () {
+        micIcon.className = "bi bi-mic";
+    };
+
+    recognition.onend = function () {
+        micIcon.className = "bi bi-mic";
+    };
+});
+</script>
+
+{% endblock %}

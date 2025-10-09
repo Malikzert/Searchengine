@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Detail Berita{% endblock %}
+
+{% block content %}
+<div class="card mb-4 
+    {% if item.sumber == 'cnn' %}bg-cnn
+    {% elif item.sumber == 'kompas' %}bg-kompas
+    {% elif item.sumber == 'detik' %}bg-detik
+    {% elif item.sumber == 'turnbackhoax' %}bg-turnbackhoax
+    {% else %}bg-light{% endif %}">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="mb-1">{{ item.judul }}</h2>
+            <small class="text-light">{{ item.tanggal }} - {{ item.sumber|capitalize }}</small>
+        </div>
+        {% if item.sumber == 'cnn' %}
+            <img src="{{ url_for('static', filename='img/logo-CNN.png') }}" height="30" alt="CNN">
+        {% elif item.sumber == 'kompas' %}
+            <img src="{{ url_for('static', filename='img/logo-KOMPAS.png') }}" height="30" alt="Kompas">
+        {% elif item.sumber == 'detik' %}
+            <img src="{{ url_for('static', filename='img/logo-DETIK.png') }}" height="30" alt="Detik">
+        {% elif item.sumber == 'turnbackhoax' %}
+            <img src="{{ url_for('static', filename='img/logo-TBH.png') }}" height="30" alt="TurnBackHoax">
+        {% endif %}
+    </div>
+
+    <div class="card-body bg-black">
+        <p>{{ item.narasi }}</p>
+        <p><strong>Skor Relevansi:</strong> {{ item.score }}</p>
+        <p><strong>Status Hoaks:</strong>
+            {% if item.hoax|lower == '1' %}
+                <span class="text-danger">Ya</span>
+            {% elif item.hoax|lower == '0' %}
+                <span class="text-success">Tidak</span>
+            {% else %}
+                Tidak diketahui
+            {% endif %}
+        </p>
+
+        <a href="{{ item.url }}" target="_blank" class="btn btn-primary">Buka Berita Asli</a>
+        <a href="{{ url_for('main.result', query=query) }}" class="btn btn-secondary ms-2">← Kembali ke Hasil</a>
+    </div>
+</div>
+{% endblock %}

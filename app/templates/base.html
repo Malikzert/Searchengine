@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BM25 News Search{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">Zeart News</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link{% if request.endpoint == 'main.index' %} active{% endif %}" href="{{ url_for('main.index') }}">Beranda</a>
+                </li>
+                {% if 'main.about' in current_app.view_functions %}
+                <li class="nav-item">
+                    <a class="nav-link{% if request.endpoint == 'main.about' %} active{% endif %}" href="{{ url_for('main.about') }}">Tentang</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center py-4">
+        <small>&copy; 230411100136 - ABDUL MALIK ADZ-DZIKRI</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const badges = document.querySelectorAll('.rekomendasi-bar .badge');
+    const input = document.getElementById('query');
+    const form = input.closest('form');
+
+    badges.forEach(function (badge) {
+        badge.addEventListener('click', function () {
+            input.value = badge.textContent.trim();
+            form.submit();  // Otomatis kirim form
+        });
+    });
+});
+</script>
+
+</html>

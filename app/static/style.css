@@ -1,0 +1,190 @@
+/* ====== GLOBAL CYBERPUNK THEME ====== */
+body {
+    background-color: #0e0e1f;
+    font-family: 'Orbitron', sans-serif;
+    color: #e0e0ff;
+    margin: 0;
+    padding: 0;
+}
+
+/* ====== NAVBAR ====== */
+.navbar {
+    background: #1a1a2e;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    border-bottom: 2px solid #00ffff;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #00ffff !important;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #e0e0ff !important;
+}
+
+.nav-link:hover {
+    color: #ff00ff !important;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+/* ====== MAIN CONTAINER ====== */
+main.container {
+    max-width: 850px;
+}
+
+/* ====== HEADINGS ====== */
+h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+}
+
+/* ====== FORMS ====== */
+form .form-control {
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #444;
+    font-size: 1rem;
+    background-color: #1e1e2f;
+    color: #00ffff;
+}
+
+form .form-control::placeholder {
+    color: #888;
+}
+
+form .btn {
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    background-color: #ff00ff;
+    border: none;
+    color: white;
+    box-shadow: 0 0 10px #ff00ff;
+    transition: 0.3s;
+}
+
+form .btn:hover {
+    background-color: #e600e6;
+    box-shadow: 0 0 15px #ff00ff;
+}
+
+/* ====== RESULT CARDS ====== */
+.card {
+    border-radius: 12px;
+    border: none;
+    background-color: #1b1b2f;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+}
+
+.card-header {
+    background-color: #292943;
+    border-bottom: 1px solid #00ffff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+.card-body {
+    background-color: #1e1e2e;
+    color: #e0e0ff;
+}
+
+.card-body p {
+    margin-bottom: 0.6rem;
+}
+
+/* ====== BADGES ====== */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.7em;
+    background: #292943;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+}
+
+/* ====== HOAX BADGE ====== */
+.text-danger {
+    font-weight: bold;
+    color: #ff0033 !important;
+}
+
+.text-success {
+    font-weight: bold;
+    color: #00ff99 !important;
+}
+
+/* ====== ALERT ====== */
+.alert {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background-color: #2e003e;
+    color: #ff00ff;
+    border: 1px solid #ff00ff;
+}
+
+/* ====== FOOTER ====== */
+footer {
+    background-color: #1a1a2e;
+    color: #888;
+    border-top: 1px solid #444;
+    margin-top: 40px;
+    padding: 20px 0;
+    font-size: 0.9rem;
+}
+
+/* ====== GRADIENT CARD BACKGROUND ====== */
+.bg-cnn .card-header {
+    background: linear-gradient(to right, #ff0066, #1b1b2f);
+    color: #fff;
+}
+
+.bg-kompas .card-header {
+    background: linear-gradient(to right, #00bcd4, #1b1b2f);
+    color: #fff;
+}
+
+.bg-detik .card-header {
+    background: linear-gradient(to right, #7c4dff, #1b1b2f);
+    color: #fff;
+}
+
+.bg-turnbackhoax .card-header {
+    background: linear-gradient(to right, #ff9100, #1b1b2f);
+    color: #fff;
+}
+
+/* ====== BUTTON KEMBALI ====== */
+.custom-back-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    background-color: #00ffff;
+    color: #000;
+    transition: background-color 0.3s ease, box-shadow 0.3s;
+    box-shadow: 0 0 10px #00ffff;
+}
+
+.custom-back-btn:hover {
+    background-color: #00cccc;
+    color: #fff;
+    box-shadow: 0 0 15px #00ffff;
+}
+strong {
+    color: #00ffe7; /* Neon cyan */
+    text-shadow: 0 0 5px #00ffe7, 0 0 10px #00ffe7;
+    font-weight: 700;
+}

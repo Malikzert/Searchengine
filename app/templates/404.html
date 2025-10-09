@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}404 - Tidak Ditemukan{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <img src="{{ url_for('static', filename='img/logo-404.png') }}" alt="Logo Monyet" height="150" class="mb-4">
+    <p class="lead">Maaf, tidak ada hasil yang relevan ditemukan.</p>
+    <p>Coba gunakan kata kunci yang berbeda atau kembali ke halaman utama.</p>
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-3">← Kembali ke Pencarian</a>
+</div>
+{% endblock %}

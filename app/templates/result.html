@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Hasil Pencarian{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Hasil Pencarian: <em>{{ query }}</em></h2>
+<p><strong>{{ total_results }}</strong> dokumen ditemukan.</p>
+
+{# Form filter sumber & limit #}
+<form method="get" action="{{ url_for('main.result') }}" class="mb-4 row g-2">
+    <input type="hidden" name="query" value="{{ query }}">
+    
+    <div class="col-auto">
+        <select name="sumber" class="form-select" onchange="this.form.submit()">
+            <option value="">Semua Sumber</option>
+            <option value="kompas" {% if request.args.get('sumber') == 'kompas' %}selected{% endif %}>Kompas</option>
+            <option value="cnn" {% if request.args.get('sumber') == 'cnn' %}selected{% endif %}>CNN</option>
+            <option value="detik" {% if request.args.get('sumber') == 'detik' %}selected{% endif %}>Detik</option>
+            <option value="turnbackhoax" {% if request.args.get('sumber') == 'turnbackhoax' %}selected{% endif %}>TurnBackHoax</option>
+        </select>
+    </div>
+
+    <div class="col-auto">
+        <select name="limit" class="form-select" onchange="this.form.submit()">
+            <option value="5" {% if limit == '5' %}selected{% endif %}>5</option>
+            <option value="10" {% if limit == '10' %}selected{% endif %}>10</option>
+            <option value="20" {% if limit == '20' %}selected{% endif %}>20</option>
+            <option value="50" {% if limit == '50' %}selected{% endif %}>50</option>
+            <option value="semua" {% if limit == 'semua' %}selected{% endif %}>Semua</option>
+        </select>
+    </div>
+</form>
+
+{% if suggested and suggested != query %}
+<div class="alert alert-info">
+    Tidak menemukan hasil untuk <strong>{{ query }}</strong>. Menampilkan hasil untuk: 
+    <a href="{{ url_for('main.result', query=suggested, sumber=request.args.get('sumber'), limit=limit) }}"><strong>{{ suggested }}</strong></a>.
+</div>
+{% endif %}
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary">
+        ← Kembali ke Pencarian
+    </a>
+</div>
+
+{% if page_results %}
+    {% for item in page_results %}
+        <div class="card mb-3 
+            {% if item.sumber == 'cnn' %}bg-cnn
+            {% elif item.sumber == 'kompas' %}bg-kompas
+            {% elif item.sumber == 'detik' %}bg-detik
+            {% elif item.sumber == 'turnbackhoax' %}bg-turnbackhoax
+            {% else %}bg-light{% endif %}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ item.judul }}</strong><br>
+                    <small class="text-muted">{{ item.tanggal }}</small>
+                </div>
+                {% if item.sumber == 'cnn' %}
+                    <img src="{{ url_for('static', filename='img/logo-CNN.png') }}" height="30" alt="CNN">
+                {% elif item.sumber == 'kompas' %}
+                    <img src="{{ url_for('static', filename='img/logo-KOMPAS.png') }}" height="30" alt="Kompas">
+                {% elif item.sumber == 'detik' %}
+                    <img src="{{ url_for('static', filename='img/logo-DETIK.png') }}" height="30" alt="Detik">
+                {% elif item.sumber == 'turnbackhoax' %}
+                    <img src="{{ url_for('static', filename='img/logo-TBH.png') }}" height="30" alt="TurnBackHoax">
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <p>{{ item.narasi[:200] }}...</p>
+                <p><strong>Skor Relevansi:</strong> {{ item.score }}</p>
+                <p><strong>Status Hoaks:</strong>
+                    {% if item.hoax|lower == '1' %}
+                        <span class="text-danger">Ya</span>
+                    {% elif item.hoax|lower == '0' %}
+                        <span class="text-success">Tidak</span>
+                    {% else %}
+                        Tidak diketahui
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('main.detail', item_id=loop.index0, query=query) }}" class="btn btn-outline-primary btn-sm">
+                    Lihat Selengkapnya
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.result', query=query, page=page-1, sumber=request.args.get('sumber'), limit=limit) }}">← Sebelumnya</a>
+            </li>
+        {% endif %}
+
+        {% if page > 2 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.result', query=query, page=1, sumber=request.args.get('sumber'), limit=limit) }}">1</a>
+            </li>
+        {% endif %}
+        {% if page > 3 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+        {% endif %}
+
+        {% for p in range(page-1, page+2) %}
+            {% if p > 0 and p <= total_pages %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('main.result', query=query, page=p, sumber=request.args.get('sumber'), limit=limit) }}">{{ p }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages - 2 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+        {% endif %}
+        {% if page < total_pages - 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.result', query=query, page=total_pages, sumber=request.args.get('sumber'), limit=limit) }}">{{ total_pages }}</a>
+            </li>
+        {% endif %}
+
+        {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.result', query=query, page=page+1, sumber=request.args.get('sumber'), limit=limit) }}">Selanjutnya →</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% else %}
+    <div class="alert alert-warning">Tidak ada hasil yang relevan ditemukan.</div>
+{% endif %}
+{% endblock %}
