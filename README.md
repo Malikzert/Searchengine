@@ -3,6 +3,7 @@
 Aplikasi pencarian berita berbasis Flask yang menggunakan algoritma **BM25** untuk menemukan berita paling relevan dari dataset `Summarized_Kompas.csv`.
 
 ---
+<img width="1909" height="924" alt="image" src="https://github.com/user-attachments/assets/a0c0f02a-3f3d-4832-85ec-6f13d01fc3e1" />
 
 ## 🔍 Fitur Utama
 
@@ -47,3 +48,4 @@ Algoritma BM25 digunakan hanya untuk mencocokkan clean_narasi dengan kueri pengg
 
 📃 Lisensi
 Proyek ini bebas digunakan untuk keperluan pembelajaran, riset, atau modifikasi pribadi. Sertakan atribusi jika digunakan untuk publikasi.
+
